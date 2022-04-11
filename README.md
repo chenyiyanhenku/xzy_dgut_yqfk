@@ -22,13 +22,7 @@
 
 ` ql repo https://github.com/miranda0111/xzy_dgut_yqfk.git ""`
 
-- 环境变量配置：
-
- |   | Name | Value |
- | - | - | - |
- |1| `USERNAME` | 202041231212(学号)|
- |2| `PASSWORD` | 账号密码 |
-
+ - 详细配置点开脚本文件看
 
 ### 其他
 
