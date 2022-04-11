@@ -1,5 +1,5 @@
 /*
-cron 10 8 * * * 
+cron 10 8 * * *  https://raw.githubusercontent.com/miranda0111/xzy_dgut_yqfk/main/xzy_yqfk.js
 
 @miranda0111 xzy 4.10 东莞理工学院疫情打卡脚本
 只适配了青龙，国外服务器打卡加强版
