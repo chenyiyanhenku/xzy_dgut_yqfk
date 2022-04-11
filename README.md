@@ -1,5 +1,5 @@
 <p align="center">
- <h1 align="center">东莞理工学院疫情打卡脚本</h1>
+ <h1 align="center">东莞理工学院疫情打卡脚本青龙版本</h1>
  <p align="center">访问超时的，联系QQ：591944012，发账号密码和server酱的key，批量打卡</p>
 </p>
    
