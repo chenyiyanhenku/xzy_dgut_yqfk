@@ -382,7 +382,6 @@ const get_access_token = function(timeout = 3 * 1000) {
                     console.log(JSON.parse(data))
                 }
                 let result = JSON.parse(data);
-                details = result;
                 if (result.access_token != undefined) {
                     // console.log(result.access_token)
                     dgut_access_token = result.access_token;
@@ -429,6 +428,7 @@ const getBaseInfo = function(timeout = 3 * 1000) {
                 }
 
                 let result = JSON.parse(data);
+                details = result;
                 if (result.message != undefined) {
                     console.log(result.message);
                     msg += `\n 【${user}】${result.message} 了🎉  \n`;
