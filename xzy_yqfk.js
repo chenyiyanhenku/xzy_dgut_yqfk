@@ -303,8 +303,8 @@ const login_token_info = function(timeout = 20 * 1000) {
                 result1 = result1.toString();
                 Cookie = result1.match(/(?<=PHPSESSID=)\S*(?=;)/)[0];
                 Cookie = 'last_oauth_appid=yqfkdaka; last_oauth_state=home; PHPSESSID=' + Cookie
-                msg += `\n 【获取】${__token__} 了🎉   \n`;
-                msg += `\n 【获取】${Cookie} 了🎉   \n`;
+                // msg += `\n 【获取】${__token__} 了🎉   \n`;
+                // msg += `\n 【获取】${Cookie} 了🎉   \n`;
                 //console.log(Cookie);
                 //console.log(__token__);              
             } catch (e) {
@@ -342,6 +342,7 @@ const getLink = function(timeout = 3 * 1000) {
                     console.log(`\n========= 尝试登录： ${result.message} =========\n`)
                     dgut_token = data.match(/(?<=token=)\S*(?=&)/)[0];
                     console.log(`\n========= 获取dgut_token： ${dgut_token} =========\n`)
+                    msg += `\n 【${user}】尝试登录：${result.message} 🎉  \n`;
                 } else {
                     console.log(`\n========= 登录失败，请检查 =========\n`)
                 }
@@ -502,7 +503,7 @@ function submit(timeout = 3 * 1000) {
             if (result != undefined) {
                 console.log(result);
                 console.log(`\n 【${user}】error:${result} 🎉  \n`);
-                msg = msg + `\n __________________________${result}_________________________________`;
+                msg += `\n 【${user}】打卡详情：${result} 🎉  \n____________________________________________________________________________________________________________________________________________________________________________________________________`;
             }
         });
 }
