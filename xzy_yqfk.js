@@ -111,11 +111,12 @@ let details;
                 console.log("res->", res);
             })
             await $.wait(2 * 1000);
-            await retry(submit, 20000).then(res => {
-                console.log("res->", res);
-            })
+            // await retry(submit, 20000).then(res => {
+            //     console.log("res->", res);
+            // })
 
             await $.wait(2 * 1000);
+
             await submit();
 
             // await $.wait(15 * 60 * 1000);
@@ -445,17 +446,17 @@ const getBaseInfo = function(timeout = 3 * 1000) {
 //打卡 https://yqfk-daka-api.dgut.edu.cn/record/ 
 //axios request submit
 function submit(timeout = 3 * 1000) {
-    if (debug) {
-        console.log(`\n 【debug】=============== 这是 submit 请求 data ===============`);
-        console.log(details);
-        console.log(`======`)
-        console.log(details.user_data);
-        console.log(`======`)
-        console.log(JSON.stringify(details));
-    }
+    // if (debug) {
+    //     console.log(`\n 【debug】=============== 这是 submit 请求 data ===============`);
+    //     console.log(details);
+    //     console.log(`======`)
+    //     console.log(details.user_data);
+    //     console.log(`======`)
+    //     console.log(JSON.stringify(details));
+    // }
     details = details.user_data;
     let axios = require('axios');
-    let data = `{"data":{"submit_time":"${details.submit_time}","name":"${details.name}",""faculty_name":"${details.faculty_name}","class_name":"${details.class_name}","username":"${details.username}","card_number":"${details.card_number}","identity_type":"${details.identity_type}","remark":"${details.remark}","tel":"${details.tel}","body_temperature":"${details.body_temperature}","connect_person":"${details.connect_person}","connect_tel":"${details.connect_tel}","family_address_detail":"${details.family_address_detail}","current_country":"${details.current_country}","current_province":"${details.current_province}","current_city":"${details.current_city}","current_district":"${details.current_district}","latest_acid_test":"${details.latest_acid_test}","huji_region":${details.huji_region},"family_region":${details.family_region},"jiguan_region":${details.jiguan_region},"current_region":${details.current_region},"huji_region_name":"${details.huji_region_name}","family_region_name":"${details.family_region_name}","jiguan_region_name":"${details.jiguan_region_name}","current_region_name":"${details.current_region_name}","card_type":"${details.card_type}","campus":"${details.campus}","health_situation":"${details.health_situation}","have_gone_important_area":"${details.have_gone_important_area}","have_contact_hubei_people":"${details.have_contact_hubei_people}","have_contact_illness_people":"${details.have_contact_illness_people}","have_isolation_in_dg":"${details.have_isolation_in_dg}","is_in_dg":"${details.is_in_dg}","have_go_out":"${details.have_go_out}","is_specific_people":"${details.is_specific_people}","health_code_status":"${details.health_code_status}","in_controllerd_area":"${details.in_controllerd_area}","completed_vaccination":"${details.completed_vaccination}","is_in_school":"${details.is_in_school}","have_stay_area":"${details.have_stay_area}","family_situation":${details.family_situation},"gps_country":"${details.gps_country}","gps_province":"${details.gps_province}","gps_city":"${details.gps_city}","gps_district":"${details.gps_district}","gps_country_name":"${details.gps_country_name}","gps_province_name":"${details.gps_province_name}","gps_city_name":"${details.gps_city_name}","gps_district_name":"${details.gps_district_name}","gps_address_name":"${details.gps_address_name}"}}`;
+    let data = `{"data":{"submit_time":"${details.submit_time}","name":"${details.name}","faculty_name":"${details.faculty_name}","class_name":"${details.class_name}","username":"${details.username}","card_number":"${details.card_number}","identity_type":"${details.identity_type}","remark":"${details.remark}","tel":"${details.tel}","body_temperature":"${details.body_temperature}","connect_person":"${details.connect_person}","connect_tel":"${details.connect_tel}","family_address_detail":"${details.family_address_detail}","current_country":"${details.current_country}","current_province":"${details.current_province}","current_city":"${details.current_city}","current_district":"${details.current_district}","latest_acid_test":"${details.latest_acid_test}","huji_region":["${details.huji_region[0]}","${details.huji_region[1]}","${details.huji_region[2]}","${details.huji_region[3]}"],"family_region":["${details.family_region[0]}","${details.family_region[1]}","${details.family_region[2]}","${details.family_region[3]}"],"jiguan_region":["${details.jiguan_region[0]}","${details.jiguan_region[1]}","${details.jiguan_region[2]}","${details.jiguan_region[3]}"],"current_region":["${details.current_region[0]}","${details.current_region[1]}","${details.current_region[2]}","${details.current_region[3]}"],"huji_region_name":"${details.huji_region_name}","family_region_name":"${details.family_region_name}","jiguan_region_name":"${details.jiguan_region_name}","current_region_name":"${details.current_region_name}","card_type":"${details.card_type}","campus":${details.campus},"health_situation":${details.health_situation},"have_gone_important_area":${details.have_gone_important_area},"have_contact_hubei_people":${details.have_contact_hubei_people},"have_contact_illness_people":${details.have_contact_illness_people},"have_isolation_in_dg":${details.have_isolation_in_dg},"is_in_dg":${details.is_in_dg},"have_go_out":${details.have_go_out},"is_specific_people":${details.is_specific_people},"health_code_status":${details.health_code_status},"in_controllerd_area":${details.in_controllerd_area},"completed_vaccination":${details.completed_vaccination},"is_in_school":${details.is_in_school},"have_stay_area":${details.have_stay_area},"family_situation":[${details.family_situation}],"gps_country":"${details.gps_country}","gps_province":"${details.gps_province}","gps_city":"${details.gps_city}","gps_district":"${details.gps_district}","gps_country_name":"${details.gps_country_name}","gps_province_name":"${details.gps_province_name}","gps_city_name":"${details.gps_city_name}","gps_district_name":"${details.gps_district_name}","gps_address_name":"${details.gps_address_name}"}}`;
     let config = {
         method: 'post',
         url: 'https://yqfk-daka-api.dgut.edu.cn/record/',
@@ -483,6 +484,7 @@ function submit(timeout = 3 * 1000) {
             let result = response.match(/(?<=message:\s*')\S*(?=')/)[0];
             if (result != undefined) {
                 console.log(result);
+                console.log(`\n 【${user} success:${result} 🎉  \n`);
                 msg += `\n 【${user}】${result} 🎉  \n`;
             }
         })
@@ -498,6 +500,7 @@ function submit(timeout = 3 * 1000) {
             let result = error.response.data.message;
             if (result != undefined) {
                 console.log(result);
+                console.log(`\n 【${user}】error:${result} 🎉  \n`);
                 msg += `\n 【${user}】${result} 🎉  \n`;
             }
         });
