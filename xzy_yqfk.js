@@ -120,7 +120,8 @@ let details;
             await submit();
 
             // await $.wait(15 * 60 * 1000);
-
+            await $.wait(2 * 1000);
+            await $.wait(2 * 1000);
             await SendMsg(msg);
 
         }
@@ -302,8 +303,8 @@ const login_token_info = function(timeout = 20 * 1000) {
                 result1 = result1.toString();
                 Cookie = result1.match(/(?<=PHPSESSID=)\S*(?=;)/)[0];
                 Cookie = 'last_oauth_appid=yqfkdaka; last_oauth_state=home; PHPSESSID=' + Cookie
-                // msg += `\n 【获取】${__token__} 了🎉   \n`;
-                // msg += `\n 【获取】${Cookie} 了🎉   \n`;
+                msg += `\n 【获取】${__token__} 了🎉   \n`;
+                msg += `\n 【获取】${Cookie} 了🎉   \n`;
                 //console.log(Cookie);
                 //console.log(__token__);              
             } catch (e) {
@@ -501,7 +502,7 @@ function submit(timeout = 3 * 1000) {
             if (result != undefined) {
                 console.log(result);
                 console.log(`\n 【${user}】error:${result} 🎉  \n`);
-                msg += `\n 【${user}】${result} 🎉  \n`;
+                msg = msg + `\n __________________________${result}_________________________________`;
             }
         });
 }
