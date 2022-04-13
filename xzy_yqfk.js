@@ -40,6 +40,7 @@ let __token__ = '';
 let dgut_token = '';
 let dgut_access_token = '';
 let authorization = '';
+let details = '';
 
 !(async () => {
     if (!(await Envs())) //多账号分割 判断变量是否为空  初步处理多账号
@@ -283,10 +284,19 @@ const login_token_info = function(timeout = 20 * 1000) {
                     //	console.log(JSON.parse(data))	
                 }
                 if (response.status == 200) {
-                    console.log('\n========= token获取成功 =========\n');
-                    __token__ = data.match(/(?<=token\s*=\s*")\S*(?=")/)[0];
+                    console.log('\n========= 检测是否存在token =========\n');
+                    let reg = new RegExp(/token/g);
+                    if( reg.test(data) != -1 ) {
+                        __token__ = data.match(/(?<=token\s*=\s*")\S*(?=")/)[0];
+                        console.log('\n========= 获取token成功 =========\n');
+                    }else {
+                        console.log('\n========= token不存在等待5分钟，尝试重新获取token =========\n');
+                        await $.wait(5 * 60 * 1000); 
+                        await retry(login_token_info, 20000).then(res => {
+                            console.log("res->", res);
+                        }) 
+                    }                   
                 }
-
                 let result1 = response.headers['set-cookie'];
                 result1 = result1.toString();
                 Cookie = result1.match(/(?<=PHPSESSID=)\S*(?=;)/)[0];
@@ -372,6 +382,7 @@ const get_access_token = function(timeout = 3 * 1000) {
                     console.log(JSON.parse(data))
                 }
                 let result = JSON.parse(data);
+                details = result;
                 if (result.access_token != undefined) {
                     // console.log(result.access_token)
                     dgut_access_token = result.access_token;
@@ -431,53 +442,11 @@ const getBaseInfo = function(timeout = 3 * 1000) {
     })
 }
 
-//打卡 https://yqfk-daka-api.dgut.edu.cn/record/ 此方法token失效
-// const submit = function (timeout = 3 * 1000){
-//     request_url.url = `https://yqfk-daka-api.dgut.edu.cn/auth`;
-//     request_url.headers = {
-//         'Host': 'yqfk-daka-api.dgut.edu.cn',
-//         'Connection': 'keep-alive',
-//         'Accept': 'application/json, text/plain, */*',
-//         'Origin': 'https://yqfk-daka.dgut.edu.cn',
-//         'Authorization': authorization,
-//         'User-Agent': UA,
-//         'Content-Type': 'application/json',
-//         'Referer': 'https://yqfk-daka.dgut.edu.cn/',
-//         'Accept-Encoding': 'gzip, deflate',
-//         'Accept-Language': 'zh-CN,en-US;q=0.8'
-//     }; 
-//   //  request_url.body = `{"data":{"submit_time":"","name":"","faculty_name":"","class_name":"","username":"","card_number":"","identity_type":"","remark":"","tel":"","body_temperature":"","connect_person":"","connect_tel":"","family_address_detail":"","current_country":"","current_province":"","current_city":"","current_district":"","latest_acid_test":"","huji_region":["","","",""],"family_region":["","","",""],"jiguan_region":["","","",""],"current_region":["","","",""],"huji_region_name":"","family_region_name":"","jiguan_region_name":"","current_region_name":"","card_type":"","campus":"","health_situation":"","have_gone_important_area":"","have_contact_hubei_people":"","have_contact_illness_people":"","have_isolation_in_dg":"","is_in_dg":"","have_go_out":"","is_specific_people":"","health_code_status":"","in_controllerd_area":"","completed_vaccination":"","is_in_school":"","have_stay_area":"","family_situation":[],"gps_country":"","gps_province":"","gps_city":"","gps_district":"","gps_country_name":"","gps_province_name":"","gps_city_name":"","gps_district_name":"","gps_address_name":""}}`;
-//     return new Promise((resolve) => {
-// 		if (debug) {
-// 			console.log(`\n 【debug】=============== 这是 submit 请求 url ===============`);
-// 			console.log(request_url);
-// 		}
-//         $.post(request_url, async (error, response, data) => {
-// 			try {
-// 				if (debug) {
-// 					console.log(`\n\n 【debug】===============这是 submit 返回data==============`);
-// 					console.log(data)
-// 					console.log(`======`)
-// 					console.log(JSON.parse(data))				
-//                 }
-//                 let result = JSON.parse(data);
-//                 if (result.message != undefined) {
-//                     console.log(result.message);
-//                     msg += `\n 【${user}】${result.message} 了🎉  \n`;
-//                 }
-//         } catch (e) {
-//             console.log(e)
-//         } finally {
-//             resolve();
-//         }
-//     }, timeout)
-// })
-// }
-
+//打卡 https://yqfk-daka-api.dgut.edu.cn/record/ 
 //axios request submit
 function submit(timeout = 3 * 1000) {
     let axios = require('axios');
-    let data = '{"data":{"submit_time":"","name":"","faculty_name":"","class_name":"","username":"","card_number":"","identity_type":"","remark":"","tel":"","body_temperature":"","connect_person":"","connect_tel":"","family_address_detail":"","current_country":"","current_province":"","current_city":"","current_district":"","latest_acid_test":"","huji_region":["","","",""],"family_region":["","","",""],"jiguan_region":["","","",""],"current_region":["","","",""],"huji_region_name":"","family_region_name":"","jiguan_region_name":"","current_region_name":"","card_type":"","campus":"","health_situation":"","have_gone_important_area":"","have_contact_hubei_people":"","have_contact_illness_people":"","have_isolation_in_dg":"","is_in_dg":"","have_go_out":"","is_specific_people":"","health_code_status":"","in_controllerd_area":"","completed_vaccination":"","is_in_school":"","have_stay_area":"","family_situation":[],"gps_country":"","gps_province":"","gps_city":"","gps_district":"","gps_country_name":"","gps_province_name":"","gps_city_name":"","gps_district_name":"","gps_address_name":""}}';
+    let data = `{"data":{"submit_time":"${details.submit_time}","name":"${details.name}",""faculty_name":"${details.faculty_name}","class_name":"${details.class_name}","username":"${details.username}","card_number":"${details.card_number}","identity_type":"${details.identity_type}","remark":"${details.remark}","tel":"${details.tel}","body_temperature":"${details.body_temperature}","connect_person":"${details.connect_person}","connect_tel":"${details.connect_tel}","family_address_detail":"${details.family_address_detail}","current_country":"${details.current_country}","current_province":"${details.current_province}","current_city":"${details.current_city}","current_district":"${details.current_district}","latest_acid_test":"${details.latest_acid_test}","huji_region":${details.huji_region},"family_region":${details.family_region},"jiguan_region":${details.jiguan_region},"current_region":${details.current_region},"huji_region_name":"${details.huji_region_name}","family_region_name":"${details.family_region_name}","jiguan_region_name":"${details.jiguan_region_name}","current_region_name":"${details.current_region_name}","card_type":"${details.card_type}","campus":"${details.campus}","health_situation":"${details.health_situation}","have_gone_important_area":"${details.have_gone_important_area}","have_contact_hubei_people":"${details.have_contact_hubei_people}","have_contact_illness_people":"${details.have_contact_illness_people}","have_isolation_in_dg":"${details.have_isolation_in_dg}","is_in_dg":"${details.is_in_dg}","have_go_out":"${details.have_go_out}","is_specific_people":"${details.is_specific_people}","health_code_status":"${details.health_code_status}","in_controllerd_area":"${details.in_controllerd_area}","completed_vaccination":"${details.completed_vaccination}","is_in_school":"${details.is_in_school}","have_stay_area":"${details.have_stay_area}","family_situation":${details.family_situation},"gps_country":"${details.gps_country}","gps_province":"${details.gps_province}","gps_city":"${details.gps_city}","gps_district":"${details.gps_district}","gps_country_name":"${details.gps_country_name}","gps_province_name":"${details.gps_province_name}","gps_city_name":"${details.gps_city_name}","gps_district_name":"${details.gps_district_name}","gps_address_name":"${details.gps_address_name}"}}`;
     let config = {
         method: 'post',
         url: 'https://yqfk-daka-api.dgut.edu.cn/record/',
