@@ -464,6 +464,10 @@ function submit(timeout = 3 * 1000) {
         },
         data: data
     };
+    if (debug) {
+        console.log(`\n 【debug】=============== 这是 getBaseInfo 请求 url ===============`);
+        console.log(config);
+    }
     axios(config)
         .then(function(response) {
             console.log(`===========`) //没抓成功
