@@ -3,7 +3,7 @@ cron 10 8 * * *  https://raw.githubusercontent.com/miranda0111/xzy_dgut_yqfk/mai
 
 @miranda0111 xzy 4.10 东莞理工学院疫情打卡脚本
 只适配了青龙，国外服务器打卡加强版
-小白脚本，多账号有大bug，目前尝试多UA以及更长等待时间，无果，等大佬给出指导
+小白脚本，多账号有大bug，目前尝试多UA、更长等待时间、退出登录等，无果，等大佬给出指导
  
 自行安装  axios  依赖；  自行安装  axios  依赖；  自行安装  axios  依赖；
 青龙直接node中安装就行
