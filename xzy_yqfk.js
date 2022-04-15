@@ -110,10 +110,12 @@ let details = '';
 
             await submit();
             await $.wait(2 * 1000);
+            await $.wait(2 * 1000);
+
             await logout_info();
             await $.wait(2 * 1000);
             await logout_info();
-            
+
             // await $.wait(15 * 60 * 1000);
             await $.wait(2 * 1000);
             await $.wait(2 * 1000);
@@ -283,18 +285,18 @@ const login_token_info = function(timeout = 20 * 1000) {
                 if (response.status == 200) {
                     console.log('\n========= 检测是否存在token =========\n');
                     let reg = new RegExp(/token/g);
-                    if( reg.test(data) != false ) {
+                    if (reg.test(data) != false) {
                         __token__ = data.match(/(?<=token\s*=\s*")\S*(?=")/)[0];
                         console.log('\n========= 获取token成功 =========\n');
-                    }else {
+                    } else {
                         console.log('\n========= token不存在等待5分钟，尝试重新获取token =========\n');
-                        await $.wait(5 * 1000); 
+                        await $.wait(5 * 1000);
                         await logout_info();
-                        await $.wait(5 * 60 * 1000); 
+                        await $.wait(5 * 60 * 1000);
                         await retry(login_token_info, 20000).then(res => {
                             console.log("res->", res);
-                        }) 
-                    }                   
+                        })
+                    }
                 }
                 let result1 = response.headers['set-cookie'];
                 result1 = result1.toString();
@@ -492,29 +494,47 @@ function submit(timeout = 3 * 1000) {
     }
     axios(config)
         .then(function(response) {
-            console.log(`===========`) //没抓成功
-            let result = response.match(/(?<=message:\s*')\S*(?=')/)[0];
-            if (result != undefined) {
-                console.log(result);
-                console.log(`\n 【${user} success:${result} 🎉  \n`);
-                msg += `\n 【${user}】${result} 🎉  \n`;
+            if (debug) {
+                console.log(`===========`) //没抓成功
+                console.log(response)
+                console.log(`===========`)
+                console.log(response.data)
+            }
+            if (response.status == 200) {
+                let result = response.data;
+                if (result != undefined) {
+                    console.log(result);
+                    console.log(`\n 【${user} success:${result} 🎉  \n`);
+                    msg += `\n 【${user}】打卡明细：${result} 🎉  \n`;
+                    console.log(`===========`)
+                    console.log(`===========`)
+                    console.log(`===========`)
+                }
             }
         })
         .catch(function(error) {
-            // console.log(error);
-            // console.log(`===========`)
-            // console.log(error.response);
-            // console.log(`===========`)
-            // console.log(error.response.data);
-            // console.log(`===========`)
-            // console.log(error.response.data.message);
-            // console.log(JSON.stringify(error.data));
-            let result = error.response.data.message;
-            if (result != undefined) {
-                console.log(result);
-                console.log(`\n 【${user}】error:${result} 🎉  \n`);
-                msg += `\n 【${user}】打卡详情：${result} 🎉  \n____________________________________________________________________________________________________________________________________________________________________________________________________`;
+            if (debug) {
+                console.log(error);
+                console.log(`===========`)
+                console.log(error.response);
+                console.log(`===========`)
+                if (error.response.data != undefined) {
+                    console.log(error.response.data);
+                    console.log(`===========`)
+                    console.log(error.response.data.message);
+                }
             }
+            if (error.response.data != undefined) {
+                let result = error.response.data.message;
+                if (result != undefined) {
+                    console.log(result);
+                    console.log(`\n 【${user}】error:${result} 🎉  \n`);
+                    msg += `\n 【${user}】打卡详情：${result} 🎉  \n____________________________________________________________________________________________________________________________________________________________________________________________________`;
+                }
+            } else {
+                msg += `出错`;
+            }
+
         });
 }
 
@@ -523,42 +543,42 @@ const logout_info = function(timeout = 10 * 1000) {
     let config = {
         method: 'get',
         url: 'https://yqfk-daka-api.dgut.edu.cn/logout',
-        headers: { 
-          'Host': ' yqfk-daka-api.dgut.edu.cn', 
-          'Connection': ' keep-alive', 
-          'sec-ch-ua': ' " Not A;Brand";v="99", "Chromium";v="98"', 
-          'Accept': ' application/json, text/plain, */*', 
-          'Authorization': authorization, 
-          'User-Agent': UA, 
-          'Origin': ' https://yqfk-daka.dgut.edu.cn', 
-          'Sec-Fetch-Site': ' same-site', 
-          'Sec-Fetch-Mode': ' cors', 
-          'Sec-Fetch-Dest': ' empty', 
-          'Referer': ' https://yqfk-daka.dgut.edu.cn/', 
-          'Accept-Encoding': ' gzip, deflate, br', 
-          'Accept-Language': ' zh-CN,zh;q=0.9'
+        headers: {
+            'Host': ' yqfk-daka-api.dgut.edu.cn',
+            'Connection': ' keep-alive',
+            'sec-ch-ua': ' " Not A;Brand";v="99", "Chromium";v="98"',
+            'Accept': ' application/json, text/plain, */*',
+            'Authorization': authorization,
+            'User-Agent': UA,
+            'Origin': ' https://yqfk-daka.dgut.edu.cn',
+            'Sec-Fetch-Site': ' same-site',
+            'Sec-Fetch-Mode': ' cors',
+            'Sec-Fetch-Dest': ' empty',
+            'Referer': ' https://yqfk-daka.dgut.edu.cn/',
+            'Accept-Encoding': ' gzip, deflate, br',
+            'Accept-Language': ' zh-CN,zh;q=0.9'
         }
-      };
-      axios(config)
-      .then(function (response) {
-        // console.log(JSON.stringify(response.data));
-        let result = response;
-        if (result != undefined) {
-            console.log(result);
-            result = response.data.data;
-            console.log(`\n 【${user} success:${result} 🎉  \n`);
-            msg += `\n 【${user}】${result} 🎉  \n`;
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-        let result = error.response.data;
-        if (result != undefined) {
-            console.log(result);
-            console.log(`\n 【${user} success:${result} 🎉  \n`);
-            msg += `\n 【${user}】${result} 🎉  \n`;
-        }
-      });
+    };
+    axios(config)
+        .then(function(response) {
+            // console.log(JSON.stringify(response.data));
+            let result = response;
+            if (result != undefined) {
+                console.log(result);
+                result = response.data.data;
+                console.log(`\n 【${user} success:${result} 🎉  \n`);
+                msg += `\n 【${user}】${result} 🎉  \n`;
+            }
+        })
+        .catch(function(error) {
+            console.log(error);
+            let result = error.response.data;
+            if (result != undefined) {
+                console.log(result);
+                console.log(`\n 【${user} error:${result} 🎉  \n`);
+                msg += `\n 【${user}】${result} 🎉  \n`;
+            }
+        });
 }
 
 
