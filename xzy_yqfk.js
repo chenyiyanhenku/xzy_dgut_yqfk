@@ -504,8 +504,8 @@ function submit(timeout = 3 * 1000) {
                 let result = response.data;
                 if (result != undefined) {
                     console.log(result);
-                    console.log(`\n 【${user} success:${result} 🎉  \n`);
-                    msg += `\n 【${user}】打卡明细：${result} 🎉  \n`;
+                    console.log(`\n 【${user} success:${result.message} 🎉  \n`);
+                    msg += `\n 【${user}】打卡明细：${result.message} 🎉  \n`;
                     console.log(`===========`)
                     console.log(`===========`)
                     console.log(`===========`)
