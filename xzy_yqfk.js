@@ -23,7 +23,7 @@ const jsname = "东莞理工学院疫情打卡脚本2022.4.10版本";
 const $ = Env(jsname);
 const notify = $.isNode() ? require('./sendNotify') : '';
 const Notify = 1; //0为关闭通知，1为打开通知,默认为1
-const debug = 1; //0为关闭调试，1为打开调试,默认为0
+const debug = 0; //0为关闭调试，1为打开调试,默认为0
 
 let xzy_yqfk_ck = ($.isNode() ? process.env.xzy_yqfk_ck : $.getdata('xzy_yqfk_ck')) || "";
 let UA = ($.isNode() ? process.env.xzy_yffk_UA : $.getdata('xzy_yffk_UA')) || 'Mozilla/5.0 (Linux; Android 10; BAH3-W09) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.92 Safari/537.36';
